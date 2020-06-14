@@ -5,7 +5,7 @@ const graphqlHttp = require('express-graphql');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
-const graphqlSchema = require('./graphql/schema');
+const schema = require('./graphql/schema');
 const graphqlResolver = require('./graphql/resolvers');
 const auth = require('./middleware/auth');
 
@@ -51,9 +51,15 @@ app.get('/', (request, response, next) => {
 app.use(
     '/graphql',
     graphqlHttp({
-        schema: graphqlSchema,
-        rootValue: graphqlResolver,
+        schema: schema,
+        // rootValue: graphqlResolver,
         graphiql: true,
+        // customFormatErrorFn: (error) => ({
+        //     message: error.message,
+        //     locations: error.locations,
+        //     stack: error.stack ? error.stack.split('\n') : [],
+        //     path: error.path,
+        // })
         formatError(err) {
             if (!err.originalError) {
                 return err;

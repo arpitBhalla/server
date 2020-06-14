@@ -1,36 +1,19 @@
-const { buildSchema } = require('graphql');
+const { makeExecutableSchema } = require('@graphql-tools/schema');
+const { mergeTypeDefs } = require('@graphql-tools/merge');
 
-module.exports = buildSchema(`
-type User {
-    _id: ID!
-    name: String!
-    email: String!
-    password: String!
-}
+const resolvers = require('./resolvers');
 
-type AuthData {
-    accessToken: String!
-    refreshToken:String!
-    userId: String!
-}
+const loginStudentSchema = require('./schema/loginStudentSchema');
+const createStudentSchema = require('./schema/createStudentSchema');
 
-input UserInputData {
-    email: String!
-    name: String!
-    password: String!
-}
+const types = [
+    loginStudentSchema,
+    createStudentSchema,
+];
 
-type RootQuery {
-    login(email: String!, password: String!): AuthData!
-    hello: String!
-}
+const typeDefs = mergeTypeDefs(types, { all: true });
 
-type RootMutation {
-    createUser(userInput: UserInputData): User!
-}
-
-schema {
-    query: RootQuery
-    mutation: RootMutation
-}
-`);
+module.exports = makeExecutableSchema({
+    typeDefs,
+    resolvers
+});
