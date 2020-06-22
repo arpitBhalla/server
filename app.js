@@ -52,7 +52,7 @@ app.use(
     '/graphql',
     graphqlHttp({
         schema: schema,
-        // rootValue: graphqlResolver,
+       // rootValue: graphqlResolver,
         graphiql: true,
         // customFormatErrorFn: (error) => ({
         //     message: error.message,

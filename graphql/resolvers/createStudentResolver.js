@@ -10,7 +10,8 @@ module.exports = async function (obj, { studentInput }, context, info) {
     }
     if (
         validator.isEmpty(studentInput.password) ||
-        !validator.isLength(studentInput.password, { min: 5 })
+        !validator
+        .isLength(studentInput.password, { min: 5 })
     ) {
         errors.push({ message: 'Password too short!' });
     }

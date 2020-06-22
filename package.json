@@ -20,6 +20,8 @@
     "graphql-tools": "^6.0.9",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.17",
+    "sendotp": "^1.2.9",
+    "twilio": "^3.46.0",
     "validator": "^13.1.0"
   },
   "devDependencies": {
