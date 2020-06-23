@@ -17,10 +17,21 @@ module.exports = async function (obj, { mobileno }, context, info) {
         error.code = 422;
         throw error;
     }
-    const sendOtp = new SendOtp(AUTH_KEY);
-    sendOtp.retry(mobileno, false, await function (error, data) {
-        console.log(data.type);
-        return data.type;
-    });
 
+    const sendOtp = new SendOtp(AUTH_KEY);
+
+    let optPromise = (mobileno) => {
+
+        return new Promise((resolve, reject) => {
+            //console.log(mobileno);
+            sendOtp.retry(mobileno, false, function (error, data) {
+                console.log(data);
+                resolve(data.message);
+            });
+        })
+    };
+    return optPromise(mobileno).then((fact) => {
+        console.log('hi i am in promise', fact);
+        return fact;
+    })
 }

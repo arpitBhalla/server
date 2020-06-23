@@ -23,13 +23,12 @@ module.exports = async function (obj, { mobileno, otp }, context, info) {
         error.code = 422;
         throw error;
     }
-    let result = "sonika";
+
     const sendOtp = new SendOtp(AUTH_KEY);
 
     let optPromise = (mobileno, otp) => {
-        
+
         return new Promise((resolve, reject) => {
-            console.log(mobileno,otp);
             sendOtp.verify(mobileno, otp, function (error, data) {
                 if (data.type == null) {
                     reject('some error in otp');
@@ -40,12 +39,9 @@ module.exports = async function (obj, { mobileno, otp }, context, info) {
                 if (data.type == 'error') {
                     console.log('OTP verification failed');
                 }
-                // console.log(data);
-                result = data.type;
-                console.log(result);
-                resolve(data.type);
-            }
-            )
+                console.log(data);
+                resolve(data.message);
+            })
         })
     };
     return optPromise(mobileno, otp).then((fact) => {
