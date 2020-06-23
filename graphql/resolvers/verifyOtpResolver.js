@@ -26,19 +26,30 @@ module.exports = async function (obj, { mobileno, otp }, context, info) {
     let result = "sonika";
     const sendOtp = new SendOtp(AUTH_KEY);
 
-    await sendOtp.verify(mobileno, otp, function (error, data) {
-        console.log(data);
-        // data object with keys 'message' and 'type'
-        if (data.type == 'success') {
-            console.log('OTP verified successfully');
-        }
-        if (data.type == 'error') {
-            console.log('OTP verification failed');
-        }
-        console.log(data);
-        result = data.type;
-        console.log(result);
-        return result;
-    });
-    console.log(result);
+    let optPromise = (mobileno, otp) => {
+        
+        return new Promise((resolve, reject) => {
+            console.log(mobileno,otp);
+            sendOtp.verify(mobileno, otp, function (error, data) {
+                if (data.type == null) {
+                    reject('some error in otp');
+                }
+                if (data.type == 'success') {
+                    console.log('OTP verified successfully');
+                }
+                if (data.type == 'error') {
+                    console.log('OTP verification failed');
+                }
+                // console.log(data);
+                result = data.type;
+                console.log(result);
+                resolve(data.type);
+            }
+            )
+        })
+    };
+    return optPromise(mobileno, otp).then((fact) => {
+        console.log('hi i am in promise', fact);
+        return fact;
+    })
 };
