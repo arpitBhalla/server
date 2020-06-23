@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { FilterInputObjectFields } = require('graphql-tools');
 const Schema = mongoose.Schema;
 
 const studentSchema = new Schema({
@@ -25,7 +26,24 @@ const studentSchema = new Schema({
     mobileno: {
         type: Number,
         required: true
-    }
+    },
+    onModel: {
+        type: String,
+        required: true,
+        enum: ['Student']
+    },
+    friends: [
+        {
+            friendId: {
+                type: Schema.Types.ObjectId,
+                refPath: 'onModel'
+            },
+            chatId: {
+                type: Schema.Types.ObjectId,
+                ref: 'Chat'
+            }
+        }
+    ]
     // status: {
     //     type: String,
     //     default: 'I am new!'
