@@ -29,21 +29,20 @@ const studentSchema = new Schema({
     },
     onModel: {
         type: String,
-        required: true,
         enum: ['Student']
     },
     friends: [
         {
-            friendId: {
+            friend: {
                 type: Schema.Types.ObjectId,
                 refPath: 'onModel'
             },
-            chatId: {
+            chat: {
                 type: Schema.Types.ObjectId,
                 ref: 'Chat'
             }
         }
-    ]
+    ],
     // status: {
     //     type: String,
     //     default: 'I am new!'

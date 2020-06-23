@@ -11,11 +11,11 @@ const messageSchema = new Schema({
         required: true,
         enum: ['Student']
     },
-    senderId: {
+    sender: {
         type: Schema.Types.ObjectId,
         refPath: 'onModel'
     },
-    receiverId: {
+    receiver: {
         type: Schema.Types.ObjectId,
         refPath: 'onModel'
     },
