@@ -1,13 +1,13 @@
 
-const loginStudent = require('./resolvers/loginStudentResolver');
-const createStudent = require('./resolvers/createStudentResolver');
+const loginUser = require('./resolvers/loginUserResolver');
+const createUser = require('./resolvers/createUserResolver');
 const sendOtp = require('./resolvers/sendOtpResolver');
 const resendOtp = require('./resolvers/resendOtpResolver');
 const verifyOtp = require('./resolvers/verifyOtpResolver');
 
 module.exports = {
     Query: {
-        loginStudent: loginStudent,
+        loginUser: loginUser,
         sendOtp: sendOtp,
         resendOtp: resendOtp,
         verifyOtp: verifyOtp,
@@ -15,6 +15,6 @@ module.exports = {
         //hello: () => { return "ss"; }
     },
     Mutation: {
-        createStudent: createStudent,
+        createUser: createUser,
     }
 };

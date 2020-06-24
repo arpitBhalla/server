@@ -2,22 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
+    messageType: {
+        type: String,
+        required: true
+    },
     body: {
         type: String,
         required: true
     },
-    onModel: {
-        type: String,
-        required: true,
-        enum: ['Student']
+    chat: {
+        type: Schema.Types.ObjectId,
+        ref: 'Chat'
     },
     sender: {
         type: Schema.Types.ObjectId,
-        refPath: 'onModel'
-    },
-    receiver: {
-        type: Schema.Types.ObjectId,
-        refPath: 'onModel'
+        ref: 'User'
     },
     date: {
         type: Date,

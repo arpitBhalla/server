@@ -18,6 +18,8 @@
 .env.test.local
 .env.production.local
 
+server w.code-workspace
+
 nodemon.json
 npm-debug.log*
 yarn-debug.log*

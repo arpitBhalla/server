@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { FilterInputObjectFields } = require('graphql-tools');
 const Schema = mongoose.Schema;
 
-const studentSchema = new Schema({
+const userSchema = new Schema({
     email: {
         type: String,
         required: true
@@ -27,20 +27,14 @@ const studentSchema = new Schema({
         type: Number,
         required: true
     },
-    onModel: {
+    userType: {
         type: String,
-        enum: ['Student']
+        required: true
     },
-    friends: [
+    chats: [
         {
-            friend: {
-                type: Schema.Types.ObjectId,
-                refPath: 'onModel'
-            },
-            chat: {
-                type: Schema.Types.ObjectId,
-                ref: 'Chat'
-            }
+            type: Schema.Types.ObjectId,
+            ref: 'Chat'
         }
     ],
     // status: {
@@ -55,4 +49,4 @@ const studentSchema = new Schema({
     //   ]
 });
 
-module.exports = mongoose.model('Student', studentSchema);
+module.exports = mongoose.model('User', userSchema);

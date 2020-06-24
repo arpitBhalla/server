@@ -3,15 +3,15 @@ const { mergeTypeDefs } = require('@graphql-tools/merge');
 
 const resolvers = require('./resolvers');
 
-const loginStudentSchema = require('./schema/loginStudentSchema');
-const createStudentSchema = require('./schema/createStudentSchema');
+const loginUserSchema = require('./schema/loginUserSchema');
+const createUserSchema = require('./schema/createUserSchema');
 const sendOtp = require('./schema/sendOtpSchema');
 const resendOtp = require('./schema/resendOtpSchema');
 const verifyOtp = require('./schema/verifyOtpSchema');
 
 const types = [
-    loginStudentSchema,
-    createStudentSchema,
+    loginUserSchema,
+    createUserSchema,
     sendOtp,
     verifyOtp,
     resendOtp,
