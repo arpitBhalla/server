@@ -52,23 +52,23 @@ app.use(
     '/graphql',
     graphqlHttp({
         schema: schema,
-       // rootValue: graphqlResolver,
+        // rootValue: graphqlResolver,
         graphiql: true,
-        // customFormatErrorFn: (error) => ({
-        //     message: error.message,
-        //     locations: error.locations,
-        //     stack: error.stack ? error.stack.split('\n') : [],
-        //     path: error.path,
-        // })
-        formatError(err) {
-            if (!err.originalError) {
-                return err;
-            }
-            const data = err.originalError.data;
-            const message = err.message || 'An error occurred.';
-            const code = err.originalError.code || 500;
-            return { message: message, status: code, data: data };
-        }
+        customFormatErrorFn: (error) => ({
+            message: error.message,
+            locations: error.locations,
+            stack: error.stack ? error.stack.split('\n') : [],
+            path: error.path,
+        })
+        // formatError(err) {
+        //     if (!err.originalError) {
+        //         return err;
+        //     }
+        //     const data = err.originalError.data;
+        //     const message = err.message || 'An error occurred.';
+        //     const code = err.originalError.code || 500;
+        //     return { message: message, status: code, data: data };
+        // }
     })
 );
 

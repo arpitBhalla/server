@@ -1,11 +1,11 @@
 module.exports = `
-    type StudentAuthData {
+    type UserAuthData {
         accessToken: String!
         refreshToken:String!
         userId: String!
     }
 
   type Query {
-     loginStudent(loginKey: String!, password: String! ,flag : String!): StudentAuthData!
+     loginUser(loginKey: String!, password: String! ,flag : String!): UserAuthData!
   }
 `;

@@ -1,22 +1,24 @@
 module.exports = `
         type Mutation {
-            createStudent(studentInput: StudentInputData): Student!
+            createUser(userInput: UserInputData): User!
         }
 
-        type Student {
+        type User {
             _id: ID!
             name: String!
             email: String!
             password: String!
             username: String!
+            usertype:  String!
             schoolusername: String!
             mobileno: String!
         }
 
-        input StudentInputData {
+        input UserInputData {
             name: String!
             email: String!
             password: String!
+            usertype: String!
             username: String!
             schoolusername: String!
             mobileno: String!
