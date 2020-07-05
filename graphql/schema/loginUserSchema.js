@@ -4,8 +4,7 @@ module.exports = `
         refreshToken:String!
         userId: String!
     }
-
-  type Query {
+    type Query {
      loginUser(loginKey: String!, password: String! ,flag : String!): UserAuthData!
   }
 `;

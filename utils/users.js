@@ -1,21 +1,19 @@
 const users=[]
 const addUser=({id,username,room})=>{
+    console.log(users);
     username=username.trim().toLowerCase()
     room=room.trim().toLowerCase()
     const existingUser=users.find((user)=>{
-        return user.room===room && user.username===username
+        return user.room==room && user.username==username
     })
-
-    const use={id,username,room}
+    const user={id,username,room}
     const err='';
 
     if(existingUser){
-        return {err,use}
+        return {err,user}
     }
-    
-    users.push(use)
-  //  console.log(use)
-    return {err, use}
+    users.push(user)
+    return {err, user}
 }
 const removeUser=(id)=>{
     const index=users.findIndex((user)=>user.id===id)    

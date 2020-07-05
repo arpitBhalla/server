@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const chatSchema = new Schema({
-    title: {
+const chatSchema = new Schema({   
+    room: {
         type: String,
         required: true
     },
@@ -20,4 +20,4 @@ const chatSchema = new Schema({
     ]
 });
 
-module.exports = mongoose.model('Chat', chatSchema);
+module.exports = mongoose.model('PersonalChat', chatSchema);
