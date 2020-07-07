@@ -10,28 +10,16 @@ const http = require('http');
 const path = require('path');
 const graphqlResolver = require('./graphql/resolvers');
 const auth = require('./middleware/auth');
-
-
-
+var User = require('./models/User/user');
+var Chat = require('./models/chat/chat');
+const { getUserRoom, getUserName, saveMessage, allMessages } = require('./chat');
 const { generateMessage } = require('./utils/messages');
 const { addUser, removeUser, getUser } = require('./utils/users');
-
-const MONGODB_URI = `mongodb+srv://sonika:sonika@aleph-eomsd.mongodb.net/aleph?retryWrites=true&w=majority`;
-
+const Understand = require('twilio/lib/rest/preview/Understand');
+const personalChat = require('./models/chat/personalChat');
+const MONGODB_URI = `mongodb+srv://nipun:nipun@cluster0.i1gmw.mongodb.net/<dbname>?retryWrites=true&w=majority`;
 const app = express() // create express server
-
 app.use(bodyParser.json()) // use body-parser middleware to parse incoming json
-
-
-
-
-
-
-
-
-
-
-
 const directory_path = path.join(__dirname + '/views');
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
@@ -111,10 +99,6 @@ mongoose
     )
     .then(result => {
         console.log("DB connected successfully!!!!!!");
-
-
-
-
     })
     .catch(err => console.log(err));
 
@@ -125,30 +109,56 @@ const io = (socketio)(app.listen(3000));
 
 io.on('connection', (socket) => {
 
-
-
-
-    socket.on('join', async ({ user, room }, callback) => {
-        const { err, use } = await addUser({ id: socket.id, username: user, room: room });
-        socket.join(use.room);
-        socket.broadcast.to(use.room).emit(
-            'message', generateMessage('admin',
-                `${use.username} is online`)
-        )
-
-    })
-
-    socket.on('sendMessage', async (message, callback) => {
-
+    socket.on('join', async ({ userId, phoneNo }, callback) => {
+        if (userId == undefined || phoneNo == undefined) {
+            return callback('error undefined userId or phoneNo')
+        }
+        var { room, error_in_room } = await getUserRoom(userId, phoneNo);
+        var { username, error_in_username } = await getUserName(userId);
+        if (error_in_room) {
+            return callback(error_in_room);
+        }
+        if (error_in_username) {
+            return callback(error_in_username);
+        }
+        console.log(username, room);
+        const { err, user } = await addUser({ id: socket.id, username: username, room: room });
+        if (err) {
+            return callback(err);
+        }
+        socket.join(user.room);
+        const { messages, error_in_messages } = await allMessages(user.room);
+        console.log(messages);
+        if (error_in_messages) {
+            return callback(error_in_messages);
+        }
+        if (messages != undefined) {
+            messages.map((value) => {
+                console.log('hello world');
+                socket.emit('message', value)
+            });
+        }
+        socket.broadcast.to(user.room).emit('message', `${username} is online`);
+    });
+    socket.on('sendMessage', async ({ message, userId, phoneNo }, callback) => {
+        console.log(userId, phoneNo);
         const user = await getUser(socket.id)
-        console.log(user);
-        if(user==undefined || user.length==0){
-            callback('some network issue');
+        if (user == undefined || user.length == 0) {
+            return callback('NO user is PResent');
         }
-        else{
+        const { room, error_in_room } = await getUserRoom(userId, phoneNo);
+        if (error_in_room) {
+            return callback(error_in_room);
+        }
+
+        const { myMessage, error_in_message } = await saveMessage(room, message, userId);
+        if (error_in_message) {
+            return callback(error_in_message);
+        }
+        else {
+            console.log('working');
+            console.log(user);
             await io.to(user[0].room).emit('message', generateMessage(user[0].username, message));
-            callback('delivered')
         }
     })
-
 })

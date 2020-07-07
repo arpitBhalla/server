@@ -2,10 +2,7 @@
 <html lang="en">
 
 <head>
-
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
@@ -14,12 +11,8 @@
     <p id='text'></p>
     jksanskjn
     <input id="input" value='' placeholder="text message"></input>
-
-
-
     <button onclick="SendMessage()">Send Message</button>
     <p id='message'>
-
     </p>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
@@ -29,22 +22,26 @@
 <script>
     const socket = io();
     let arr = [];
-    const { user, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
-    document.querySelector('#text').innerHTML='my name is '+user+' my room is '+room;
+    const { userId, phoneNo } = Qs.parse(location.search, { ignoreQueryPrefix: true });
+    document.querySelector('#text').innerHTML = 'my name is ' + userId + ' my room is ' + phoneNo;
+
+    
+
+
+
+
+
+
     socket.on('message', (message) => {
-        //   console.log(message)
-        arr.push({
-            s: message.username,
-            m: message.text,
-            t: (Date.now())
-        })
-        var x=document.querySelector('#message').innerHTML;
+
+        arr.push(message)
+        var x = document.querySelector('#message').innerHTML;
         console.log(x);
-        x=document.createElement('LI');
-        arr.map((val)=>{
+        x = document.createElement('LI');
+        arr.map((val) => {
             console.log(val.m);
-            let x1=document.createTextNode(val.m);
-            
+            let x1 = document.createTextNode(val.m);
+
             x.appendChild(x1);
         })
         console.log(x);
@@ -53,16 +50,15 @@
 
     function SendMessage() {
         var message = document.querySelector('#input').value;
-        socket.emit('sendMessage', message, (message) => {
-            if (message!='some network issue') {
-                console.log('working fine');
+        socket.emit('sendMessage', { message, userId, phoneNo }, (message) => {
+            if (message) {
+                alert(message);
             }
         });
     }
-    socket.emit('join', { user, room }, (err) => {
-        if (err) {
-            alert(err)
-            location.href = '/';
+    socket.emit('join', { userId, phoneNo }, (message) => {
+        if (message) {
+            alert(message);
         }
     })
 
